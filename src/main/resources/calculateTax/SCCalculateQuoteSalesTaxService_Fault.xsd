@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://schemas.oracle.com/parameters" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.oracle.com/parameters">
+    <xsd:element name="errorparams">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="errcode" type="xsd:string"/>
+                <xsd:element name="errdesc" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

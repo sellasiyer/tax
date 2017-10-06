@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://selectcomfort.com/EnterpriseObjects/CalculateQuoteSalesTax" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://selectcomfort.com/EnterpriseObjects/CalculateQuoteSalesTax">
+    <xsd:element name="QuotationRequest" type="ns:QuotationRequest"/>
+    <xsd:complexType name="QuotationRequest">
+        <xsd:sequence>
+            <xsd:element name="Currency" type="ns:Currency" nillable="true"/>
+            <xsd:element name="Seller" type="ns:BaseSeller"/>
+            <xsd:element name="LineItem" type="ns:LineItem" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="documentNumber" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1"/>
+                    <xsd:maxLength value="40"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="returnAssistedParametersIndicator" use="optional" default="true" type="xsd:boolean"/> <!--attribute defined below -->      
+        <xsd:attribute name="documentDate" type="xsd:date" use="required"/>
+        <xsd:attribute name="transactionType" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    <xsd:complexType name="Currency">
+        <xsd:attribute name="isoCurrencyCodeAlpha" use="optional" default="USD">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:length value="3"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="BaseSeller">
+        <xsd:sequence>
+            <xsd:element name="Company" maxOccurs="1" minOccurs="0" default="SCP">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Division" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Department" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="LineItem">
+        <xsd:sequence>
+            <xsd:element name="Seller" type="ns:Seller" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="Customer" type="ns:Customer" maxOccurs="1" minOccurs="1"/>
+            <!-- customer defined below   -->
+            <xsd:element name="Product" maxOccurs="1" minOccurs="1" nillable="false">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="ns:ProdType">
+                            <xsd:attribute name="productClass" use="optional">
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                        <xsd:minLength value="0"/>
+                                        <xsd:maxLength value="40"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:attribute>
+                        </xsd:extension>        
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+            
+            <xsd:element name="Quantity" maxOccurs="1" minOccurs="1" type="ns:Quantity" nillable="false"/>
+            <xsd:element name="ExtendedPrice" maxOccurs="1" minOccurs="1" type="xsd:decimal" nillable="false"/>
+            <xsd:element name="FlexibleFields" type="ns:FlexibleFields"/>
+        </xsd:sequence>
+        <xsd:attribute name="lineItemNumber" type="xsd:integer" use="required"/>
+        <xsd:attribute name="locationCode" use="optional" default="SLC">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="0"/>
+                    <xsd:maxLength value="20"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="lineItemId" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1"/>
+                    <xsd:maxLength value="40"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="Seller">
+        <xsd:sequence>
+            <xsd:element name="PhysicalOrgin" type="ns:Address" nillable="true" minOccurs="0"/>
+            <xsd:element name="AdministrativeOrigin" type="ns:Address" nillable="true" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Customer">
+        <xsd:sequence>
+            <xsd:element name="CustomerCode" type="ns:CustomerCode"/>
+            <xsd:element name="Destination" type="ns:ReqAddress" maxOccurs="1" minOccurs="1" nillable="false"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="ProdType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="40"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <!-- fixed this quantity-->
+    <xsd:complexType name="Quantity">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:decimal">
+                <xsd:attribute name="unitOfMeasure" use="required">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:minLength value="1"/>
+                            <xsd:maxLength value="3"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <!-- fixed this customercode-->
+    <xsd:complexType name="CustomerCode">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="classCode" use="optional">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:minLength value="1"/>
+                            <xsd:maxLength value="40"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>        
+
+    <xsd:complexType name="FlexibleFields">
+        <xsd:sequence>
+            <xsd:element name="ShipToCustomerCode" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ShipToCustomerName" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="DiscountAmount" maxOccurs="1" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="OriginalSellingPrice" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="QuotedTax" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="SourceSalesOrderNumber" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="InvoiceNumber" maxOccurs="1" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="OrderType" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="LineType" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            
+            <!-- New Requirements 3-26-2013 -->
+            <xsd:element name="BillToCustomerName" maxOccurs="1" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>            
+            <xsd:element name="ProductDescription" maxOccurs="1" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="40"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+                        
+            <xsd:element name="SalesOrderDate" maxOccurs="1" minOccurs="1" type="xsd:date"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Address">
+        <xsd:sequence>
+            <xsd:element name="StreetAddress1" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="100"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="StreetAddress2" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="100"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="City" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="60"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="MainDivision" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="60"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="PostalCode" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="15"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Country" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="60"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- required address elements -->
+    <xsd:complexType name="ReqAddress">
+        <xsd:sequence>
+            <xsd:element name="StreetAddress1" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="100"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="StreetAddress2" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="100"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="City" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="60"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="MainDivision" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="60"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="PostalCode" maxOccurs="1" minOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="1"/>
+                        <xsd:maxLength value="15"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Country" maxOccurs="1" minOccurs="0" nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="0"/>
+                        <xsd:maxLength value="60"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    
+    <!-- response data structure -->
+    <xsd:element name="QuotationResponse" type="ns:QuotationResponse"/>
+
+    <xsd:complexType name="QuotationResponse">
+        <xsd:sequence>
+            <xsd:element name="results" type="xsd:string"/>
+            <xsd:element name="TotalTax" type="xsd:decimal"/>
+            <xsd:element name="LineItem" type="ns:LineItemResponse" maxOccurs="unbounded" nillable="false"/>
+        </xsd:sequence>
+        <xsd:attribute name="documentNumber" type="xsd:string" use="optional"/>
+        <xsd:attribute name="returnAssistedParametersIndicator" type="xsd:boolean" use="optional"/>
+        <xsd:attribute name="documentDate" type="xsd:date" use="optional"/>
+        <xsd:attribute name="transactionType" type="xsd:string" use="optional"/>
+    </xsd:complexType>
+    <xsd:complexType name="LineItemResponse">
+        <xsd:sequence>
+            <xsd:element name="Seller" type="ns:Seller" nillable="true" minOccurs="0"/>
+            <xsd:element name="TotalTax" maxOccurs="1" minOccurs="0" type="xsd:decimal" nillable="true"/>
+        </xsd:sequence>
+        <xsd:attribute name="lineItemNumber" type="xsd:integer" use="required"/>
+        <xsd:attribute name="locationCode" use="optional">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1"/>
+                    <xsd:maxLength value="20"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="lineItemId" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:minLength value="1"/>
+                    <xsd:maxLength value="40"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    
+    <!--
+    <xsd:element name="GeneralFault">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="FaultName" type="xsd:string" />
+                <xsd:element name="Description" type="xsd:string"/>    
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    -->
+
+</xsd:schema>

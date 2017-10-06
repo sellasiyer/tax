@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.security.support.KeyStoreFactoryBean;
 import org.springframework.ws.soap.security.support.TrustManagersFactoryBean;
 import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
@@ -16,6 +17,8 @@ import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 import javax.net.ssl.HostnameVerifier;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class TaxClientConfiguration {
@@ -43,6 +46,9 @@ public class TaxClientConfiguration {
         client.setMarshaller(marshaller);
         client.setUnmarshaller(marshaller);
         client.setMessageSender(httpsUrlConnectionMessageSender());
+        ClientInterceptor[]  clientInterceptorList = new ClientInterceptor[1];
+        clientInterceptorList[0] = loggingInterceptor();
+        client.setInterceptors(clientInterceptorList);
         return client;
     }
 
@@ -78,5 +84,15 @@ public class TaxClientConfiguration {
         trustManagersFactoryBean.setKeyStore(trustStore().getObject());
 
         return trustManagersFactoryBean;
+    }
+
+
+
+    @Bean
+    public SNWebServiceClientLoggingInterceptor loggingInterceptor() {
+        SNWebServiceClientLoggingInterceptor snWebServiceClientLoggingInterceptor = new SNWebServiceClientLoggingInterceptor();
+
+
+        return snWebServiceClientLoggingInterceptor;
     }
 }
