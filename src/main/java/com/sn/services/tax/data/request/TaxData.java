@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
 
+/**
+ *
+ */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonRootName("taxRequest")
 public class TaxData {
@@ -22,6 +25,14 @@ public class TaxData {
     @JsonProperty("customerCode")
     private String customerCode;
 
+    /**
+     *
+     * @param customerCode
+     * @param customerName
+     * @param shippingAddressData
+     * @param isbillingAddress
+     * @param taxLineItemDataList
+     */
     public TaxData(String customerCode, String customerName, AddressData shippingAddressData, boolean isbillingAddress, List<TaxLineItemData> taxLineItemDataList) {
         this.customerCode = customerCode;
         this.customerName = customerName;
@@ -32,6 +43,9 @@ public class TaxData {
         this.taxLineItemDataList = taxLineItemDataList;
     }
 
+    /**
+     *
+     */
     public TaxData() {
     }
 

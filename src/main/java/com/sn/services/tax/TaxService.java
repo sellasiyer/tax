@@ -21,7 +21,11 @@ public class TaxService {
     @Autowired
     private TaxClient taxClient;
 
-
+    /**
+     *
+     * @param taxData
+     * @return
+     */
     public TaxResponseData getTax(TaxData taxData) {
 
         QuotationResponse quotationResponse = taxClient.getTaxQuotation(getTaxQuotationRequest(taxData));
@@ -30,7 +34,11 @@ public class TaxService {
 
     }
 
-
+    /**
+     *
+     * @param taxData
+     * @return
+     */
     private JAXBElement<QuotationRequest> getTaxQuotationRequest(TaxData taxData) {
 
         ObjectFactory objectFactory = new ObjectFactory();

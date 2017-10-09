@@ -22,7 +22,13 @@ public class AddressData {
     @JsonProperty("country")
     private String country;
 
-
+    /**
+     *
+     * @param city
+     * @param state
+     * @param postalCode
+     * @param country
+     */
     public AddressData(String city, String state, String postalCode, String country) {
         this.city = city;
         this.state = state;
@@ -30,6 +36,12 @@ public class AddressData {
         this.country = country;
     }
 
+    /**
+     *
+     * @param city
+     * @param state
+     * @param postalCode
+     */
     public AddressData(String city, String state, String postalCode) {
         this.city = city;
         this.state = state;

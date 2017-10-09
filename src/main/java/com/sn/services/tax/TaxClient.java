@@ -8,11 +8,18 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import javax.xml.bind.JAXBElement;
 
-
+/**
+ *
+ */
 public class TaxClient extends WebServiceGatewaySupport {
     private static final Logger log = LoggerFactory.getLogger(TaxClient.class);
 
 
+    /**
+     *
+     * @param requestJAXBElement
+     * @return
+     */
     public QuotationResponse getTaxQuotation(final JAXBElement<QuotationRequest> requestJAXBElement) {
 
         log.info("Sending request");

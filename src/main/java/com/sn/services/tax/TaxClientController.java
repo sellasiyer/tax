@@ -15,6 +15,11 @@ public class TaxClientController {
     @Autowired
     private TaxService taxService;
 
+    /**
+     *
+     * @param taxData
+     * @return
+     */
     @RequestMapping(value = "/tax", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody

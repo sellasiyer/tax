@@ -1,10 +1,19 @@
 package com.sn.services.tax.data.response;
 
+/**
+ *
+ */
 public class TaxLineItemResponseData {
     private String id;
     private String number;
     private String lineItemTax;
 
+    /**
+     *
+     * @param id
+     * @param number
+     * @param lineItemTax
+     */
     public TaxLineItemResponseData(String id, String number, String lineItemTax) {
         this.id = id;
         this.number = number;

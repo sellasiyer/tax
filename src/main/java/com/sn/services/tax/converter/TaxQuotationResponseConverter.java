@@ -6,7 +6,8 @@ import com.sn.webservice.model.tax.QuotationResponse;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Created by sellasiyer on 10/6/17.
+ * Convert the Fusion web service response into Tax response data.
+ *
  */
 public class TaxQuotationResponseConverter implements Converter<QuotationResponse, TaxResponseData> {
 

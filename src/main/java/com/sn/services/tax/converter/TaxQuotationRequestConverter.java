@@ -17,25 +17,31 @@ import java.util.GregorianCalendar;
 import java.util.UUID;
 
 /**
- * Created by sellasiyer on 10/6/17.
+ * Convert the Tax request data to Web service request.
  */
 public class TaxQuotationRequestConverter implements Converter<TaxData, QuotationRequest> {
 
 
     private static final Logger log = LoggerFactory.getLogger(TaxQuotationRequestConverter.class);
+    private static final String SALE = "SALE";
+    private static final String DIVISION = "200";
+    private static final String DEPT = "10";
+    private static final String UNIT_OF_MEASURE="EA";
+
+    private static final ObjectFactory objectFactory = new ObjectFactory();
+    private static final BaseSeller baseSeller = objectFactory.createBaseSeller();
 
     @Override
     public QuotationRequest convert(TaxData taxData) {
 
-        ObjectFactory objectFactory = new ObjectFactory();
+
         QuotationRequest quotationRequest = new QuotationRequest();
         quotationRequest.setDocumentDate(createXMLGregorianCalendar());
         quotationRequest.setDocumentNumber(UUID.randomUUID().toString());
-        quotationRequest.setTransactionType("SALE");
+        quotationRequest.setTransactionType(SALE);
 
-        BaseSeller baseSeller = objectFactory.createBaseSeller();
-        baseSeller.setDivision("200");
-        baseSeller.setDepartment("10");
+        baseSeller.setDivision(DIVISION);
+        baseSeller.setDepartment(DEPT);
 
         quotationRequest.setSeller(baseSeller);
 
@@ -55,19 +61,19 @@ public class TaxQuotationRequestConverter implements Converter<TaxData, Quotatio
 
         customer.setDestination(reqAddress);
 
-        for (TaxLineItemData taxLineItemData : taxData.getTaxLineItemDataList()
-                ) {
 
+        taxData.getTaxLineItemDataList().forEach(taxLineItemData -> {
 
             LineItem lineItem = objectFactory.createLineItem();
             lineItem.setLineItemNumber(BigInteger.valueOf(Long.valueOf(taxLineItemData.getNumber())));
             lineItem.setLineItemId(taxLineItemData.getId());
             lineItem.setExtendedPrice(BigDecimal.valueOf(Long.valueOf(taxLineItemData.getSellingPrice())));
+
             lineItem.setCustomer(customer);
 
 
             Quantity quantity = objectFactory.createQuantity();
-            quantity.setUnitOfMeasure("EA");
+            quantity.setUnitOfMeasure(UNIT_OF_MEASURE);
             quantity.setValue(BigDecimal.valueOf(Long.valueOf(taxLineItemData.getQuantity())));
 
             lineItem.setQuantity(quantity);
@@ -83,12 +89,12 @@ public class TaxQuotationRequestConverter implements Converter<TaxData, Quotatio
             flexibleFields.setOriginalSellingPrice(taxLineItemData.getOriginalPrice());
             flexibleFields.setDiscountAmount(taxLineItemData.getDiscountPrice());
             flexibleFields.setSourceSalesOrderNumber(lineItem.getLineItemNumber().toString());
-            flexibleFields.setOrderType("SALE");
-            flexibleFields.setLineType("SALE");
+            flexibleFields.setOrderType(SALE);
+            flexibleFields.setLineType(SALE);
             flexibleFields.setSalesOrderDate(quotationRequest.getDocumentDate());
             lineItem.setFlexibleFields(flexibleFields);
             quotationRequest.getLineItem().add(lineItem);
-        }
+        });
 
 
         return quotationRequest;

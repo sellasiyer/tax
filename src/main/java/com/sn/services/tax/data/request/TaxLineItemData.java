@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.UUID;
 
+/**
+ *
+ */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonPropertyOrder(
         {"lineItemNumber", "productCode", "productClass", "quantity", "sellingPrice"})
@@ -33,6 +36,14 @@ public class TaxLineItemData {
     private String orderType = "SALE";
     private String lineType = "SALE";
 
+    /**
+     *
+     * @param number
+     * @param productCode
+     * @param quantity
+     * @param sellingPrice
+     * @param productClass
+     */
     public TaxLineItemData(String number, String productCode, String quantity, String sellingPrice, String productClass) {
         this();
         this.setNumber(number);
@@ -42,6 +53,9 @@ public class TaxLineItemData {
         this.setProductClass(productClass);
     }
 
+    /**
+     *
+     */
     public TaxLineItemData() {
         this.setId(UUID.randomUUID().toString());
 
