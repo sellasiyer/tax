@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://schemas.oracle.com/parameters" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.oracle.com/parameters">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schemas.oracle.com/parameters"
+            elementFormDefault="qualified" xmlns="http://schemas.oracle.com/parameters">
     <xsd:element name="errorparams">
         <xsd:complexType>
             <xsd:sequence>

@@ -26,7 +26,7 @@ public class TaxResponseData {
     }
 
     public List<TaxLineItemResponseData> getLineItemDataList() {
-        if(lineItemDataList != null)
+        if (lineItemDataList != null)
             lineItemDataList = new ArrayList<>();
 
         return lineItemDataList;

@@ -2,14 +2,13 @@ package com.sn.services.tax.data.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.UUID;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonPropertyOrder(
-        {"lineItemNumber", "productCode", "productClass", "quantity", "sellingPrice" })
+        {"lineItemNumber", "productCode", "productClass", "quantity", "sellingPrice"})
 public class TaxLineItemData {
 
 
@@ -24,8 +23,13 @@ public class TaxLineItemData {
     private String quantity;
     @JsonProperty("sellingPrice")
     private String sellingPrice;
+    @JsonProperty("discountPrice")
+    private String discountPrice;
+    @JsonProperty("originalPrice")
+    private String originalPrice;
 
-    private String unitOfMeasure="EA";
+
+    private String unitOfMeasure = "EA";
     private String orderType = "SALE";
     private String lineType = "SALE";
 
@@ -40,6 +44,7 @@ public class TaxLineItemData {
 
     public TaxLineItemData() {
         this.setId(UUID.randomUUID().toString());
+
     }
 
     public String getProductClass() {
@@ -113,5 +118,21 @@ public class TaxLineItemData {
 
     public void setLineType(String lineType) {
         this.lineType = lineType;
+    }
+
+    public String getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(String discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public String getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(String originalPrice) {
+        this.originalPrice = originalPrice;
     }
 }

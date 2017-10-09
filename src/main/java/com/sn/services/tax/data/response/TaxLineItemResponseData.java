@@ -12,7 +12,6 @@ public class TaxLineItemResponseData {
     }
 
 
-
     public String getId() {
         return id;
     }

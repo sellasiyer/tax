@@ -28,31 +28,11 @@ public class SNWebServiceClientLoggingInterceptor implements ClientInterceptor {
 
     private static final Logger log = Logger.getLogger(SNWebServiceClientLoggingInterceptor.class);
     private static final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    static { dbf.setValidating(false); }
 
-    @Override
-    public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
-        return false;
+    static {
+        dbf.setValidating(false);
     }
 
-    @Override
-    public void afterCompletion(MessageContext messageContext, Exception e) throws WebServiceClientException {
-
-    }
-
-    @Override
-    public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
-        printoutLog(messageContext.getRequest(), true);
-        return true;
-    }
-
-    @Override
-    public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
-        // Must check hasResponse, because GetResponse will create a new one if NULL and throw off the library.
-        if (messageContext.hasResponse()) printoutLog(messageContext.getResponse(), false);
-        return true;
-    }
-    
     public static void printoutLog(final WebServiceMessage message, final boolean isRequest) {
         if (message != null) {
             try {
@@ -91,9 +71,32 @@ public class SNWebServiceClientLoggingInterceptor implements ClientInterceptor {
 
             return out.toString();
 
-        } catch (ParserConfigurationException |SAXException |TransformerException |IOException e) {
+        } catch (ParserConfigurationException | SAXException | TransformerException | IOException e) {
             /* Fail gracefully by returning the original serialized body. */
             return body;
         }
+    }
+
+    @Override
+    public boolean handleFault(final MessageContext messageContext) throws WebServiceClientException {
+        return false;
+    }
+
+    @Override
+    public void afterCompletion(MessageContext messageContext, Exception e) throws WebServiceClientException {
+
+    }
+
+    @Override
+    public boolean handleRequest(final MessageContext messageContext) throws WebServiceClientException {
+        printoutLog(messageContext.getRequest(), true);
+        return true;
+    }
+
+    @Override
+    public boolean handleResponse(final MessageContext messageContext) throws WebServiceClientException {
+        // Must check hasResponse, because GetResponse will create a new one if NULL and throw off the library.
+        if (messageContext.hasResponse()) printoutLog(messageContext.getResponse(), false);
+        return true;
     }
 }

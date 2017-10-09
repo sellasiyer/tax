@@ -1,12 +1,12 @@
 package com.sn.services.tax;
-import org.apache.catalina.connector.Connector;
-import org.apache.coyote.http11.Http11NioProtocol;
+
+import com.sn.services.tax.converter.TaxQuotationRequestConverter;
+import com.sn.services.tax.converter.TaxQuotationResponseConverter;
+import com.sn.webservice.model.tax.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
@@ -15,10 +15,6 @@ import org.springframework.ws.soap.security.support.TrustManagersFactoryBean;
 import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 
 import javax.net.ssl.HostnameVerifier;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 public class TaxClientConfiguration {
@@ -46,7 +42,7 @@ public class TaxClientConfiguration {
         client.setMarshaller(marshaller);
         client.setUnmarshaller(marshaller);
         client.setMessageSender(httpsUrlConnectionMessageSender());
-        ClientInterceptor[]  clientInterceptorList = new ClientInterceptor[1];
+        ClientInterceptor[] clientInterceptorList = new ClientInterceptor[1];
         clientInterceptorList[0] = loggingInterceptor();
         client.setInterceptors(clientInterceptorList);
         return client;
@@ -87,7 +83,6 @@ public class TaxClientConfiguration {
     }
 
 
-
     @Bean
     public SNWebServiceClientLoggingInterceptor loggingInterceptor() {
         SNWebServiceClientLoggingInterceptor snWebServiceClientLoggingInterceptor = new SNWebServiceClientLoggingInterceptor();
@@ -95,4 +90,25 @@ public class TaxClientConfiguration {
 
         return snWebServiceClientLoggingInterceptor;
     }
+
+
+    @Bean
+    public ObjectFactory objectFactory() {
+        return new ObjectFactory();
+    }
+
+    @Bean
+    public GenericConversionService conversionService() {
+        GenericConversionService conversionService = new GenericConversionService();
+        conversionService.addConverter(new TaxQuotationRequestConverter());
+        conversionService.addConverter(new TaxQuotationResponseConverter());
+        return conversionService;
+    }
+
+
+    @Bean
+    public TaxService taxService() {
+        return new TaxService();
+    }
+
 }

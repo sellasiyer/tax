@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
+
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonRootName("taxRequest")
 public class TaxData {
@@ -29,6 +30,9 @@ public class TaxData {
         }
         this.shippingAddressData = shippingAddressData;
         this.taxLineItemDataList = taxLineItemDataList;
+    }
+
+    public TaxData() {
     }
 
     public String getCustomerName() {

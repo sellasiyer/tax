@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://selectcomfort.com/EnterpriseObjects/CalculateQuoteSalesTax" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://selectcomfort.com/EnterpriseObjects/CalculateQuoteSalesTax">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ns="http://selectcomfort.com/EnterpriseObjects/CalculateQuoteSalesTax" targetNamespace="http://selectcomfort.com/EnterpriseObjects/CalculateQuoteSalesTax"
+            elementFormDefault="qualified">
     <xsd:element name="QuotationRequest" type="ns:QuotationRequest"/>
     <xsd:complexType name="QuotationRequest">
         <xsd:sequence>
@@ -15,7 +17,8 @@
                 </xsd:restriction>
             </xsd:simpleType>
         </xsd:attribute>
-        <xsd:attribute name="returnAssistedParametersIndicator" use="optional" default="true" type="xsd:boolean"/> <!--attribute defined below -->      
+        <xsd:attribute name="returnAssistedParametersIndicator" use="optional" default="true"
+                       type="xsd:boolean"/> <!--attribute defined below -->
         <xsd:attribute name="documentDate" type="xsd:date" use="required"/>
         <xsd:attribute name="transactionType" type="xsd:string" use="required"/>
     </xsd:complexType>
@@ -73,11 +76,11 @@
                                     </xsd:restriction>
                                 </xsd:simpleType>
                             </xsd:attribute>
-                        </xsd:extension>        
+                        </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>
             </xsd:element>
-            
+
             <xsd:element name="Quantity" maxOccurs="1" minOccurs="1" type="ns:Quantity" nillable="false"/>
             <xsd:element name="ExtendedPrice" maxOccurs="1" minOccurs="1" type="xsd:decimal" nillable="false"/>
             <xsd:element name="FlexibleFields" type="ns:FlexibleFields"/>
@@ -118,7 +121,7 @@
             <xsd:maxLength value="40"/>
         </xsd:restriction>
     </xsd:simpleType>
-    
+
     <!-- fixed this quantity-->
     <xsd:complexType name="Quantity">
         <xsd:simpleContent>
@@ -148,7 +151,7 @@
                 </xsd:attribute>
             </xsd:extension>
         </xsd:simpleContent>
-    </xsd:complexType>        
+    </xsd:complexType>
 
     <xsd:complexType name="FlexibleFields">
         <xsd:sequence>
@@ -224,7 +227,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            
+
             <!-- New Requirements 3-26-2013 -->
             <xsd:element name="BillToCustomerName" maxOccurs="1" minOccurs="0">
                 <xsd:simpleType>
@@ -233,7 +236,7 @@
                         <xsd:maxLength value="40"/>
                     </xsd:restriction>
                 </xsd:simpleType>
-            </xsd:element>            
+            </xsd:element>
             <xsd:element name="ProductDescription" maxOccurs="1" minOccurs="0">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string">
@@ -242,7 +245,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-                        
+
             <xsd:element name="SalesOrderDate" maxOccurs="1" minOccurs="1" type="xsd:date"/>
         </xsd:sequence>
     </xsd:complexType>
@@ -353,7 +356,7 @@
         </xsd:sequence>
     </xsd:complexType>
 
-    
+
     <!-- response data structure -->
     <xsd:element name="QuotationResponse" type="ns:QuotationResponse"/>
 
@@ -391,7 +394,7 @@
             </xsd:simpleType>
         </xsd:attribute>
     </xsd:complexType>
-    
+
     <!--
     <xsd:element name="GeneralFault">
         <xsd:complexType>
